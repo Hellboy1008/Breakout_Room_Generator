@@ -81,7 +81,6 @@ else:
     lowest_error_val = -1000000
     temp_breakout_room = copy.deepcopy(breakout_room)
     best_breakout_room = []
-    a = 0
     for num in range(1000):
         error_val = 0
         breakout_room = copy.deepcopy(temp_breakout_room)
@@ -99,10 +98,8 @@ else:
         if error_val > lowest_error_val:
             lowest_error_val = error_val
             best_breakout_room = copy.deepcopy(breakout_room)
-        a += 1
 
 breakout_room = best_breakout_room
-print(a)
 
 # print breakout rooms
 b_room_num = 1
