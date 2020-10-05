@@ -1,3 +1,4 @@
 # ignore text files
 *.txt
 *.pyc
+*.xlsx
