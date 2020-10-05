@@ -1,3 +1,8 @@
+# Created by: 龍ONE
+# Date Created: October 1, 2020
+# Date Edited: October 5, 2020
+# Purpose: Pseudo-randomly assign people to breakout rooms.
+
 import sys
 
 def room_assigner(num_breakout_rooms, breakout_room, people_lst_m, people_lst_f, people_lst_all):

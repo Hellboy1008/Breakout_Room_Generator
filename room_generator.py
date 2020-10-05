@@ -1,3 +1,8 @@
+# Created by: 龍ONE
+# Date Created: October 1, 2020
+# Date Edited: October 5, 2020
+# Purpose: Generate breakout rooms for zoom call.
+
 import copy
 import random
 import room_assigner

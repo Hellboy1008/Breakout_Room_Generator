@@ -1,3 +1,8 @@
+# Created by: 龍ONE
+# Date Created: October 5, 2020
+# Date Edited: October 5, 2020
+# Purpose: Import breakout room data to excel file.
+
 import pandas as pd
 import sys
 
