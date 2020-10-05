@@ -1,6 +1,6 @@
 # Created by: 龍ONE
 # Date Created: October 1, 2020
-# Date Edited: October 5, 2020
+# Date Edited: October 6, 2020
 # Purpose: Generate breakout rooms for zoom call.
 
 # import copy for deepcopy list
@@ -53,7 +53,8 @@ for line in previous_rooms:
 for groups in groups_lst:
     for index_one in range(len(groups)):
         for index_two in range(index_one + 1, len(groups)):
-            tuples_lst.append((groups[index_one].strip(), groups[index_two].strip()))
+            tuples_lst.append(
+                (groups[index_one].strip(), groups[index_two].strip()))
 
 # create list of all people
 people_lst_all = []
@@ -100,7 +101,7 @@ else:
 
 # select the best breakout room if applicable
 if len(tuples_lst) != 0:
-  breakout_room = best_breakout_room
+    breakout_room = best_breakout_room
 
 # print breakout rooms
 b_room_num = 1
@@ -111,4 +112,4 @@ for groups in breakout_room:
 
 # print error value if applicable
 if len(tuples_lst) != 0:
-  print('Error Val = ', error_val)
+    print('Error Val = ', error_val)
