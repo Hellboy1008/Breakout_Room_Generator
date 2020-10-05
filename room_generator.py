@@ -3,28 +3,20 @@
 # Date Edited: October 5, 2020
 # Purpose: Generate breakout rooms for zoom call.
 
+# import copy for deepcopy list
 import copy
+# import random for shuffling list
 import random
+# import room_assigner file for function
 import room_assigner
 
-# number of new people
-num_new_ppl = 0
-# list for all people present
-people_lst_all = []
-# list for the people present (females)
-people_lst_f = []
-# list for the people present (males)
-people_lst_m = []
-# file for people present
-present = open('present.txt', 'r')
-# file for previous rooms
-previous_rooms = open('previous-rooms.txt', 'r')
-# start adding females to the list
-start_list_f = False
-# start adding males to the list
-start_list_m = False
-
 # create list for people present, and assign value for breakout rooms and event name
+num_new_ppl = 0
+people_lst_f = []
+people_lst_m = []
+present = open('present.txt', 'r')
+start_list_f = False
+start_list_m = False
 for line in present:
     if 'Desired number of ppl per room:' in line:
         ppl_per_room = int(
@@ -44,10 +36,11 @@ for line in present:
         if start_list_f == True:
             people_lst_f.append(line.strip())
 
-# look for previous groups
+# look for previous groups and add tuples if applicable
 groups_lst = []
-tuples_lst = []
+previous_rooms = open('previous-rooms.txt', 'r')
 search_groups = False
+tuples_lst = []
 for line in previous_rooms:
     if 'EVENT: ' + event_name in line and '(Y)' in line:
         search_groups = True
@@ -63,6 +56,7 @@ for groups in groups_lst:
             tuples_lst.append((groups[index_one].strip(), groups[index_two].strip()))
 
 # create list of all people
+people_lst_all = []
 people_lst_m = people_lst_m[1:]
 people_lst_f = people_lst_f[1:]
 people_lst_all.extend(people_lst_m)
@@ -104,7 +98,9 @@ else:
             lowest_error_val = error_val
             best_breakout_room = copy.deepcopy(breakout_room)
 
-breakout_room = best_breakout_room
+# select the best breakout room if applicable
+if len(tuples_lst) != 0:
+  breakout_room = best_breakout_room
 
 # print breakout rooms
 b_room_num = 1
@@ -112,4 +108,7 @@ for groups in breakout_room:
     print(('Breakout Room ' + str(b_room_num) + ': ' +
            ', '.join(groups)).replace(' (N)', ''))
     b_room_num += 1
-print('Error Val = ', error_val)
+
+# print error value if applicable
+if len(tuples_lst) != 0:
+  print('Error Val = ', error_val)

@@ -3,7 +3,9 @@
 # Date Edited: October 5, 2020
 # Purpose: Import breakout room data to excel file.
 
+# import pandas for dataframe
 import pandas as pd
+# import sys for exiting program
 import sys
 
 # file for previous rooms
