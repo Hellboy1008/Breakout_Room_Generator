@@ -1,6 +1,6 @@
 # Created by: 龍ONE
 # Date Created: October 1, 2020
-# Date Edited: October 6, 2020
+# Date Edited: October 13, 2020
 # Purpose: Pseudo-randomly assign people to breakout rooms.
 
 # import sys for exiting file
