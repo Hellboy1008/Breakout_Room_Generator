@@ -30,15 +30,18 @@ def room_assigner(num_breakout_rooms, breakout_room, people_lst_m, people_lst_f,
             room_num = 0
     # assign newcomer girls to rooms
     room_num_newcomer_f = room_num_newcomer_m
+    newcomer_f = False
     for person in people_lst_f:
         if '(N)' in person:
+            newcomer_f = True
             breakout_room[room_num_newcomer_f].append(person)
             ppl_in_room.append(person)
             room_num_newcomer_f += 1
             if room_num_newcomer_f > num_breakout_rooms - 1:
                 room_num_newcomer_f = 0
     people_lst_f = [ppl for ppl in people_lst_f if ppl not in ppl_in_room]
-    room_num = room_num_newcomer_f
+    if newcomer_f == True:
+        room_num = room_num_newcomer_f
     # asssign the rest of girls to rooms
     for person in people_lst_f:
         breakout_room[room_num].append(person)
