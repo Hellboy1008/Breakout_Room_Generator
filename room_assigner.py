@@ -3,8 +3,6 @@
 # Date Edited: October 23, 2020
 # Purpose: Pseudo-randomly assign people to breakout rooms.
 
-# import copy for deepcopy list
-import copy
 # import sys for exiting file
 import sys
 
