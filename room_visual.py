@@ -134,10 +134,10 @@ stats_file.write("Average people met by everyone: %d (%.2f%%)" %
 for index in range(1, max(attendance.values()) + 1):
     if index == 1:
         stats_file.write(
-            "\nAverage people met by people that has been 1 time:  %d (%.2f%%)" % (other_ppl_count * attendance_weighted_avg[0], attendance_weighted_avg[0] * 100))
+            "\nAverage people met by a person that has been 1 time:  %d (%.2f%%)" % (other_ppl_count * attendance_weighted_avg[0], attendance_weighted_avg[0] * 100))
     else:
         stats_file.write(
-            "\nAverage people met by people that has been %d times: %d (%.2f%%)" % (index, other_ppl_count * attendance_weighted_avg[index - 1], attendance_weighted_avg[index - 1] * 100))
+            "\nAverage people met by a person that has been %d times: %d (%.2f%%)" % (index, other_ppl_count * attendance_weighted_avg[index - 1], attendance_weighted_avg[index - 1] * 100))
 
 # close statistics file
 stats_file.close()
