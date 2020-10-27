@@ -88,8 +88,8 @@ sf.apply_headers_style(styler_obj=Styler(
 sf.apply_column_style(df.columns.tolist()[0], styler_obj=Styler(
     font=utils.fonts.calibri, font_size=11, bold=True, wrap_text=False))
 sf.set_column_width(df.columns.tolist(), 11)
-sf.add_color_scale_conditional_formatting(start_type='num', start_value=0, start_color='F8696B',
-                                          end_type='num', end_value=3, end_color='63BE7B', mid_type='num', mid_value=0, mid_color='FFEB84')
+sf.add_color_scale_conditional_formatting(start_type='num', start_value=np.amin(pair_value_arr), start_color='F8696B',
+                                          end_type='num', end_value=np.amax(pair_value_arr), end_color='63BE7B', mid_type='num', mid_value=np.percentile(pair_value_arr, 50), mid_color='FFEB84')
 
 # add black background for diagonal
 for column in df.columns.tolist()[1:]:
@@ -97,6 +97,47 @@ for column in df.columns.tolist()[1:]:
         bg_color=utils.colors.black, font=utils.fonts.calibri, font_size=11))
 
 # create excel writer and covert to excel
-excel_writer = StyleFrame.ExcelWriter('breakout_data.xlsx')
+excel_writer = StyleFrame.ExcelWriter('breakout_rooms_data.xlsx')
 sf.to_excel(excel_writer=excel_writer, sheet_name=event_name)
 excel_writer.save()
+
+# create file for statistics
+stats_file = open('statistics.txt', 'w+')
+
+# create list of names and how many times they've been to large group
+attendance = dict()
+for rooms in rooms_lst:
+    for name in rooms:
+        if name.strip() in attendance.keys():
+            attendance[name.strip()] += 1
+        else:
+            attendance[name.strip()] = 1
+
+# calculate average value for each attendance value
+attendance_weighted_avg = []
+for index in range(1, max(attendance.values()) + 1):
+    attendance_pair_value_lst = []
+    for key in attendance.keys():
+        if attendance[key] == index:
+            attendance_pair_value_lst.extend(df[key].tolist())
+    attendance_pair_value_lst = [
+        value for value in attendance_pair_value_lst if value != 'X']
+    attendance_weighted_avg.append(
+        (len(attendance_pair_value_lst) - attendance_pair_value_lst.count(0)) / len(attendance_pair_value_lst))
+
+# write statistics to file
+everyone_avg = (len(pair_value_lst) - pair_value_lst.count(0)
+                ) / len(pair_value_lst)
+other_ppl_count = len(attendance.keys()) - 1
+stats_file.write("Average people met by everyone: %d (%.2f%%)" %
+                 (other_ppl_count * everyone_avg, everyone_avg * 100))
+for index in range(1, max(attendance.values()) + 1):
+    if index == 1:
+        stats_file.write(
+            "\nAverage people met by people that has been 1 time:  %d (%.2f%%)" % (other_ppl_count * attendance_weighted_avg[0], attendance_weighted_avg[0] * 100))
+    else:
+        stats_file.write(
+            "\nAverage people met by people that has been %d times: %d (%.2f%%)" % (index, other_ppl_count * attendance_weighted_avg[index - 1], attendance_weighted_avg[index - 1] * 100))
+
+# close statistics file
+stats_file.close()
