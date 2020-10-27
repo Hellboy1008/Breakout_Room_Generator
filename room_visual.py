@@ -1,10 +1,14 @@
 # Created by: 龍ONE
 # Date Created: October 5, 2020
-# Date Edited: October 6, 2020
+# Date Edited: October 28, 2020
 # Purpose: Import breakout room data to excel file.
 
+# import numpy for numpy arrays
+import numpy as np
 # import pandas for dataframe
 import pandas as pd
+# import from styleframe for excel output
+from styleframe import StyleFrame, Styler, utils
 # import sys for exiting program
 import sys
 
@@ -12,7 +16,7 @@ import sys
 previous_rooms = open('previous-rooms.txt', 'r')
 
 # ask for user input for event name
-event_name = input("Enter the event name: ")
+event_name = input('Enter the event name: ')
 
 # check if event exists in text file
 event_exists = False
@@ -22,12 +26,11 @@ for line in previous_rooms:
     if 'EVENT: ' + event_name in line and '(Y)' in line:
         event_exists = True
         add_names = True
+        event_name = line[6:].replace('(Y)', '').strip()
         continue
     elif 'EVENT: ' + event_name in line and '(N)' in line:
         break
     if event_exists == True:
-        if 'EVENT: ' in line:
-            break
         if len(line.strip()) != 0:
             rooms_lst.append(line.strip().split(','))
 
@@ -41,7 +44,7 @@ for groups in rooms_lst:
 
 # print error message
 if event_exists == False or len(rooms_lst) == 0:
-    print("Event was not found or there are no previous breakout rooms for the event.")
+    print('Event was not found or there are no previous breakout rooms for the event.')
     sys.exit()
 
 # create list of people
@@ -64,23 +67,36 @@ for tuple_pair in tuples_lst:
 for people in ppl_lst:
     df.loc[people, people] = 'X'
 
-# create writer for excel file
-writer = pd.ExcelWriter("breakout_data.xlsx", engine='xlsxwriter')
-df.to_excel(writer, sheet_name='FA 2020')
+# change index to default integers
+df.reset_index(inplace=True)
+df = df.rename(columns={'index': ''})
 
-# create workbook and worksheet
-workbook = writer.book
-worksheet = writer.sheets['FA 2020']
+# create np array that holds all values for pairs
+pair_value_lst = []
+for index, row in df.iterrows():
+    for column in df.columns.tolist()[1:]:
+        if (row[column] != 'X'):
+            pair_value_lst.append(row[column])
+pair_value_arr = np.array(pair_value_lst)
 
-# add formatting to excel file
-text_align = workbook.add_format({'align': 'center'})
-black_fill = workbook.add_format({'bg_color': 'black'})
+# creating styleframe object
+sf = StyleFrame(df, styler_obj=Styler(font=utils.fonts.calibri, font_size=11))
 
-# implement formatting on columns
-worksheet.set_column('A:CC', None, text_align)
-worksheet.conditional_format('B2:CC70', {
-    'type': 'text', 'criteria': 'containing', 'value': 'X', 'format': black_fill})
-worksheet.conditional_format('B2:CC70', {'type': '3_color_scale'})
+# apply formatting such as font, font size, color
+sf.apply_headers_style(styler_obj=Styler(
+    font=utils.fonts.calibri, font_size=11, bold=True, wrap_text=False))
+sf.apply_column_style(df.columns.tolist()[0], styler_obj=Styler(
+    font=utils.fonts.calibri, font_size=11, bold=True, wrap_text=False))
+sf.set_column_width(df.columns.tolist(), 11)
+sf.add_color_scale_conditional_formatting(start_type='num', start_value=0, start_color='F8696B',
+                                          end_type='num', end_value=3, end_color='63BE7B', mid_type='num', mid_value=0, mid_color='FFEB84')
 
-# save writer and output file
-writer.save()
+# add black background for diagonal
+for column in df.columns.tolist()[1:]:
+    sf.apply_style_by_indexes(sf[sf[column] == 'X'], cols_to_style=[column], styler_obj=Styler(
+        bg_color=utils.colors.black, font=utils.fonts.calibri, font_size=11))
+
+# create excel writer and covert to excel
+excel_writer = StyleFrame.ExcelWriter('breakout_data.xlsx')
+sf.to_excel(excel_writer=excel_writer, sheet_name=event_name)
+excel_writer.save()
