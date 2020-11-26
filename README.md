@@ -63,5 +63,19 @@ FirstName LastNameInitial, FirstName LastNameInitial, FirstName LastNameInitial
 EVENT: Meeting 2 (N)
 ```
 
+## Interpreting the error value
+
+If your event has previous breakout rooms, there will be an error value that is printed after running the program to generating new breakout rooms.
+
+The total error value displayed when you run the program is a addition of individual error values from each recurring pair. The program also displays the number of pairs that have shared `x` number of rooms together and how many pairs shared a room in the previous set of breakout rooms for your reference.
+
+### How the error value is calculated
+
+Let's suppose you have `n` previous sets of breakout rooms.
+
+Each time the program finds a pair that have shared a breakout room in the past, it will add `m * 1/n` to the error value, where m is how long ago the previous breakout room was. For example, if you had 5 previous sets of breakout rooms and the pair previously met at the first set of breakout rooms, it will add the value `1 * 1/5 = 0.2`. On the other hand, if the pair previously met at the most recent set of breakout rooms, it will add the value `5 * 1/5 = 1.0`. This way, a pair that has met more recently is weighted more than a pair that haven't met in a while.
+
+Additionally, each time the program finds a pair that has met more than once in previous sets of breakout rooms, it adds 5 to the error value, while still accounting for the last time they met. For example, let's say you have 5 previous sets of breakout rooms and the pair previously met at the first set of breakout rooms. The program then finds out that the pair also met at the most recent set of breakout rooms. The error value changes from 0.2 to 6.0, where 6 is derived from 1, the value calculated from meeting at the most recent set of breakout rooms, plus 5.
+
 \
 **If you are familiar with python, feel free to edit the program to better suite your needs! If there are any bugs/issues with the current program, please report the issue on Github and I will try my best to look into them.**
