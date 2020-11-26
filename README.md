@@ -63,4 +63,5 @@ FirstName LastNameInitial, FirstName LastNameInitial, FirstName LastNameInitial
 EVENT: Meeting 2 (N)
 ```
 
+\
 **If you are familiar with python, feel free to edit the program to better suite your needs! If there are any bugs/issues with the current program, please report the issue on Github and I will try my best to look into them.**
