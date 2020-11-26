@@ -4,6 +4,7 @@ Generates breakout rooms with the following conditions:
 
 1. Gender is balanced as much as possible. If there is a significant amount of males/females compared to the other gender, the groups might not be balanced.
 2. Maximizes the number of new people met by each participant. This will depend on the frequency of each participant showing up to the event and how many previous iterations of the event there were.
+3. If leaders or newcomers are specified, the program will split them amongst the breakout rooms as best as possible
 
 ## Running the program
 
