@@ -32,7 +32,7 @@ def bestBreakoutRoom(past_groups, ppl_lst_f, ppl_lst_m, ppl_per_room, trials):
             lowest_error_val_lst = error_val[1]
             best_breakout_rooms = copy.deepcopy(temp_breakout_rooms)
         # if error value is 0, end trials
-        if error_val == 0:
+        if lowest_error_val == 0:
             break
         count += 1
 
