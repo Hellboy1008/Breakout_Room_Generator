@@ -1,12 +1,59 @@
 # Created by: 龍ONE
 # Date Created: November 25, 2020
-# Date Edited: November 26, 2020
+# Date Edited: December 2, 2020
 # Purpose: Contains helper functions for generating breakout rooms.
 
 # imports
 import copy
 import random
 import sys
+
+
+def addExtraPerson(breakout_rooms, master_lst, past_groups):
+    # new breakout rooms
+    new_breakout_room = []
+
+    # ask name for new person
+    new_person_name = input(
+        'Enter the name of the new person you would like to add.\n')
+    new_person_name = new_person_name.strip()
+
+    # check if person already exists in breakout room
+    for group in breakout_rooms:
+        for person in group:
+            if new_person_name == person.replace('(N)', '').replace('(L)', '').strip():
+                print('This person is already in a room!\n')
+                return new_breakout_room
+
+    # ask if new person is a leader or newcomer
+    new_person_status = input(
+        'Is this person a leader or newcomer? Type L for leader, N for newcomer, any other key if neither.\n')
+    new_person_status = new_person_status.lower().strip()
+
+    # ask for new person's gender if they are not in the master list
+    if new_person_name not in master_lst.keys():
+        # ask user for the person's gender
+        gender = ''
+        while gender != 'M' and gender != 'F':
+            gender = input(
+                'Input the gender for this person. Type M for male, F for female\n')
+        # add to master list
+        if gender == 'M':
+            master_lst[new_person_name] = 'M'
+        else:
+            master_lst[new_person_name] = 'F'
+
+    # add leader or newcomer status if applicable
+    if new_person_status == 'l':
+        new_person_name += ' (L)'
+    elif new_person_status == 'n':
+        new_person_name += ' (N)'
+
+    # find best new breakout room
+    new_breakout_room = bestNewBreakoutRoom(
+        'add', breakout_rooms, master_lst, new_person_name, past_groups)
+
+    return new_breakout_room
 
 
 def bestBreakoutRoom(past_groups, ppl_lst_f, ppl_lst_m, ppl_per_room, trials):
@@ -39,6 +86,61 @@ def bestBreakoutRoom(past_groups, ppl_lst_f, ppl_lst_m, ppl_per_room, trials):
     return best_breakout_rooms, lowest_error_val, lowest_error_val_lst
 
 
+def bestNewBreakoutRoom(action, breakout_rooms, master_lst, person, past_groups):
+    # lowest error value for new rooms
+    lowest_error_val = float('inf')
+    # new breakout rooms
+    new_breakout_rooms = []
+    # temp breakout rooms 1 for simulations
+    temp_breakout_rooms_1 = []
+    # temp breakout rooms 2 for simulations
+    temp_breakout_rooms_2 = []
+
+    # check if we're adding or removing a person
+    if action == 'add':
+        # generate all possible breakout rooms with placing new person and moving at most 1 person
+        for room_num_i in range(len(breakout_rooms)):
+            temp_breakout_rooms_1 = copy.deepcopy(breakout_rooms)
+            temp_breakout_rooms_1[room_num_i].append(person)
+            for existing_person in breakout_rooms[room_num_i]:
+                temp_breakout_rooms_2 = copy.deepcopy(temp_breakout_rooms_1)
+                temp_breakout_rooms_2[room_num_i].remove(existing_person)
+                for room_num_j in range(len(breakout_rooms)):
+                    temp_breakout_rooms_2[room_num_j].append(existing_person)
+                    error_val = calculateWeightedErrorVal(
+                        temp_breakout_rooms_2, master_lst, past_groups)
+                    # update new breakout rooms and error value if the room is ideal
+                    if error_val < lowest_error_val:
+                        lowest_error_val = error_val
+                        new_breakout_rooms = copy.deepcopy(
+                            temp_breakout_rooms_2)
+                    temp_breakout_rooms_2[room_num_j].remove(existing_person)
+    elif action == 'remove':
+        temp_breakout_rooms_1 = copy.deepcopy(breakout_rooms)
+        # remove person from breakout rooms
+        for room_num in range(len(temp_breakout_rooms_1)):
+            for person_i in temp_breakout_rooms_1[room_num]:
+                if person_i.replace('(L)', '').replace('(N)', '').strip() == person:
+                    temp_breakout_rooms_1[room_num].remove(person_i)
+        # generate all possible breakout rooms by moving at most 1 person
+        for room_num_i in range(len(temp_breakout_rooms_1)):
+            for existing_person in temp_breakout_rooms_1[room_num_i]:
+                temp_breakout_rooms_2 = copy.deepcopy(temp_breakout_rooms_1)
+                temp_breakout_rooms_2[room_num_i].remove(existing_person)
+                for room_num_j in range(len(temp_breakout_rooms_1)):
+                    temp_breakout_rooms_2[room_num_j].append(existing_person)
+                    error_val = calculateWeightedErrorVal(
+                        temp_breakout_rooms_2, master_lst, past_groups)
+                    # update new breakout rooms and error value if the room is ideal
+                    if error_val < lowest_error_val:
+                        lowest_error_val = error_val
+                        new_breakout_rooms = copy.deepcopy(
+                            temp_breakout_rooms_2)
+                    temp_breakout_rooms_2[room_num_j].remove(existing_person)
+
+    return new_breakout_rooms
+
+
 def calculateErrorVal(breakout_rooms, past_groups):
     # error value for breakout room
     error_val = 0
@@ -59,6 +161,118 @@ def calculateErrorVal(breakout_rooms, past_groups):
     return error_val, error_val_lst
 
 
+def calculateWeightedErrorVal(breakout_rooms, master_lst, past_groups):
+    # error value without considering room size, gender, status
+    error_val = calculateErrorVal(breakout_rooms, past_groups)[0]
+
+    # check room size and update error value
+    largest_room_size = 0
+    smallest_room_size = float('inf')
+    for group in breakout_rooms:
+        if len(group) < smallest_room_size:
+            smallest_room_size = len(group)
+        if len(group) > largest_room_size:
+            largest_room_size = len(group)
+    if largest_room_size - smallest_room_size >= 2:
+        error_val += 10000 * (largest_room_size - smallest_room_size)
+
+    # check gender balance in each group
+    for group in breakout_rooms:
+        num_males = 0
+        num_females = 0
+        for person in group:
+            person = person.replace('(L)', '').replace('(N)', '').strip()
+            if master_lst[person] == 'M':
+                num_males += 1
+            else:
+                num_females += 1
+        if abs(num_males - num_females) == 1:
+            error_val += 1000
+        elif abs(num_males - num_females) != 0:
+            error_val += 3000
+
+    # check balance of leaders/newcomers in each group
+    largest_leader_num = 0
+    largest_newcomer_num = 0
+    smallest_leader_num = float('inf')
+    smallest_newcomer_num = float('inf')
+    for group in breakout_rooms:
+        leader_num = 0
+        newcomer_num = 0
+        for person in group:
+            if '(L)' in person:
+                leader_num += 1
+            elif '(N)' in person:
+                newcomer_num += 1
+        # update smallest and largest values
+        if leader_num > largest_leader_num:
+            largest_leader_num = leader_num
+        if leader_num < smallest_leader_num:
+            smallest_leader_num = leader_num
+        if newcomer_num > largest_newcomer_num:
+            largest_newcomer_num = newcomer_num
+        if newcomer_num < smallest_newcomer_num:
+            smallest_newcomer_num = newcomer_num
+    if largest_leader_num - smallest_leader_num >= 2:
+        error_val += 5000
+    if largest_newcomer_num - smallest_newcomer_num >= 2:
+        error_val += 5000
+
+    return error_val
+
+
+def editingRooms(breakout_rooms, master_lst, past_groups=None):
+    # previous breakout rooms
+    prev_breakout_rooms = []
+    # new breakout rooms
+    new_breakout_rooms = []
+    # option chosen by user
+    user_option = 1
+
+    # run while user wants to edit rooms
+    while True:
+        user_option = input(
+            '\nWhat would you like to do? Enter the number that applies.\n1. Adding a new person\n2. Removing an existing person\n3. Undo previous edit\n')
+        # check if user wants to edit rooms
+        if user_option != '1' and user_option != '2' and user_option != '3':
+            break
+
+        # run respective functions
+        if user_option == '1':
+            new_breakout_rooms = addExtraPerson(
+                breakout_rooms, master_lst, past_groups)
+            if len(new_breakout_rooms) != 0:
+                prev_breakout_rooms.append(breakout_rooms)
+        elif user_option == '2':
+            new_breakout_rooms = removeExistingPerson(breakout_rooms, master_lst, past_groups)
+            if len(new_breakout_rooms) != 0:
+                prev_breakout_rooms.append(breakout_rooms)
+        else:
+            if prev_breakout_rooms == []:
+                print('There were no previous rooms!\n')
+                continue
+            else:
+                new_breakout_rooms = copy.deepcopy(prev_breakout_rooms[-1])
+                prev_breakout_rooms.pop()
+
+        # check if user actually made new breakout rooms
+        if len(new_breakout_rooms) == 0:
+            continue
+        
+        # print the rooms that changed
+        changed_rooms = []
+        for room_num in range(len(breakout_rooms)):
+            if breakout_rooms[room_num] != new_breakout_rooms[room_num]:
+                changed_rooms.append(room_num + 1)
+        print('Rooms that changed:', changed_rooms)
+
+        # print new breakout rooms
+        errorValCalc = calculateErrorVal(new_breakout_rooms, past_groups)
+        printBreakoutRooms(new_breakout_rooms, True,
+                           errorValCalc[0], errorValCalc[1])
+        breakout_rooms = copy.deepcopy(new_breakout_rooms)
+
+
 def generateBreakoutRooms(trials):
     # tuple of event details from present.txt
     event_details = getEventDetails()
@@ -69,7 +283,7 @@ def generateBreakoutRooms(trials):
     # tuple containing the list of participants separated by gender
     ppl_lst_gendered = separateGender(event_details[1])
 
-    # check if there were previous groups
+    # check if there were previous groups and print rooms
     if not past_groups[1]:
         breakout_rooms = roomAssigner(
             ppl_lst_gendered[0], ppl_lst_gendered[1], event_details[2])
@@ -80,6 +294,16 @@ def generateBreakoutRooms(trials):
             past_groups[0], ppl_lst_gendered[0], ppl_lst_gendered[1], event_details[2], trials)
         printBreakoutRooms(
             breakout_rooms[0], past_groups[1], breakout_rooms[1], breakout_rooms[2])
+
+    # option for editing breakout rooms
+    edit_rooms = input(
+        '\nWould you like the option to edit breakout rooms? Enter Y if yes, any other key if no.\n')
+    if edit_rooms.lower() == 'y':
+        if past_groups[1]:
+            editingRooms(breakout_rooms[0],
+                         ppl_lst_gendered[2], past_groups[0])
+        else:
+            editingRooms(breakout_rooms, ppl_lst_gendered[2])
 
 
 def getEventDetails():
@@ -134,6 +358,7 @@ def printBreakoutRooms(breakout_rooms, past_groups, error_val=0, error_val_lst=[
         '(L)', '').strip() for name in group] for group in breakout_rooms]
 
     # print breakout rooms
+    print()
     for room in breakout_rooms:
         print('Breakout Room', str(breakout_room_num) + ':', ', '.join(room))
         breakout_room_num += 1
@@ -186,6 +411,32 @@ def pushNewcomers(ppl_lst):
                 ppl_lst[:index] + ppl_lst[index + 1:]
 
     return ppl_lst
+
+
+def removeExistingPerson(breakout_rooms, master_lst, past_groups):
+    # new breakout rooms
+    new_breakout_room = []
+
+    # ask name for person to remove
+    person_remove_name = input(
+        'Enter the name of the new person you would like to remove.\n')
+    person_remove_name = person_remove_name.strip()
+
+    # check if person exists in breakout room
+    person_exists = False
+    for group in breakout_rooms:
+        for person in group:
+            if person_remove_name == person.replace('(N)', '').replace('(L)', '').strip():
+                person_exists = True
+    if not person_exists:
+        print('This person does not exist in the breakout rooms!\n')
+        return new_breakout_room
+
+    # find best new breakout room
+    new_breakout_room = bestNewBreakoutRoom(
+        'remove', breakout_rooms, master_lst, person_remove_name, past_groups)
+
+    return new_breakout_room
 
 
 def roomAssigner(ppl_lst_f, ppl_lst_m, ppl_per_room):
@@ -322,4 +573,4 @@ def separateGender(ppl_lst_all):
     random.shuffle(ppl_lst_m)
     random.shuffle(ppl_lst_f)
 
-    return ppl_lst_f, ppl_lst_m
+    return ppl_lst_f, ppl_lst_m, master_lst
