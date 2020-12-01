@@ -189,7 +189,7 @@ def calculateWeightedErrorVal(breakout_rooms, master_lst, past_groups):
         if abs(num_males - num_females) == 1:
             error_val += 1000
         elif abs(num_males - num_females) != 0:
-            error_val += 3000
+            error_val += 3000 * abs(num_males - num_females)
 
     # check balance of leaders/newcomers in each group
     largest_leader_num = 0
