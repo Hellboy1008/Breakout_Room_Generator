@@ -566,8 +566,10 @@ def separateGender(ppl_lst_all):
                                name_str + '\nType M for male, F for female\n')
             if gender == 'M':
                 ppl_lst_m.append(name)
+                master_lst[name] = 'M'
             else:
                 ppl_lst_f.append(name)
+                master_lst[name] = 'F'
 
     # randomize lists
     random.shuffle(ppl_lst_m)
