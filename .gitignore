@@ -1,5 +1,4 @@
-# ignore text files
-*.txt
-*.pyc
-*.xlsx
-*.vscode
+# ignore personal data
+.vscode
+files
+__pycache__
