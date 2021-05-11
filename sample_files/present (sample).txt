@@ -1,0 +1,33 @@
+** Note: Add the following letters after the names if applicable **
+** FirstName LastNameInitial (N) -> for freshman/newcomers **
+** FirstName LastNameInitial (L) -> for leaders **
+
+Desired number of ppl per room: 4
+Premade groups: 0
+Event Name: Weekly Meeting
+
+PRESENT:
+
+Person AD
+Person AE
+Person AF
+Person AG
+Person AH
+Person AI
+Person AJ
+Person AK
+Person AM
+Person AO
+Person AP
+Person AQ
+Person AT
+Person AU
+Person AV
+Person AW
+Person AX
+Person AY
+Person BA
+Person BB
+Person BC
+Person BF
+Person BH

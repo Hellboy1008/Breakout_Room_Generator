@@ -1,0 +1,13 @@
+EVENT: Weekly Meeting (Y)
+
+Person AA, Person AC, Person AE, Person AF
+Person AG, Person AH, Person AI, Person AO
+Person AP, Person AS, Person AT, Person AY, Person AZ
+Person BA, Person BB, Person BG, Person BH, Person BI
+
+Person AC, Person AF, Person AK, Person AL
+Person AN, Person AR, Person AS, Person AT
+Person AX, Person BA, Person BB, Person BC, Person BD
+Person BE, Person BG, Person BJ, Person BK, Person BL
+
+EVENT: Monthly Meeting (N)
