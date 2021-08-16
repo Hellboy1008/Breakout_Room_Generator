@@ -1,4 +1,5 @@
 # ignore personal data
+.DS_Store
 .vscode
 files
 __pycache__
