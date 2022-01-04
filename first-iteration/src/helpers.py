@@ -37,6 +37,8 @@ def createBestBreakoutRooms():
         if ev < lowest_ev:
             best_breakout_room = breakout_rooms.copy()
             lowest_ev = ev
+        if lowest_ev == 0:
+            break
     best_breakout_room.balanceRooms(False)
     print('\nAlgorithm 1 completed')
     # simulated annealing
@@ -62,6 +64,8 @@ def createBestBreakoutRooms():
         if ev < lowest_ev:
             best_breakout_room = temp_rooms.copy()
             lowest_ev = ev
+        if lowest_ev == 0:
+            break
     print('\nAlgorithm 2 completed')
     return best_breakout_room
 
