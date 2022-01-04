@@ -1,6 +1,6 @@
 # Created by: 龍ONE
 # Date Created: January 25, 2021
-# Date Edited: February 9, 2021
+# Date Edited: January 3, 2021
 # Purpose: Helper functions for generating breakout rooms
 
 # imports
