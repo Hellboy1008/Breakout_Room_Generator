@@ -1,4 +1,4 @@
-package com.breakoutroom.model;
+package com.breakout.models;
 
 import java.util.ArrayList;
 import java.util.Collections;

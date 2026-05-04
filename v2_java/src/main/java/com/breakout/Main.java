@@ -1,6 +1,6 @@
-package com.breakoutroom;
+package com.breakout;
 
-import com.breakoutroom.service.RoomGenerator;
+import com.breakout.generator.RoomGenerator;
 
 import java.io.IOException;
 

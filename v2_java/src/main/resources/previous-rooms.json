@@ -1,0 +1,26 @@
+{
+  "events": [
+    {
+      "name": "Company Meeting",
+      "hasPreviousRooms": true,
+      "previousRooms": [
+        {
+          "roomNumber": 1,
+          "members": ["John Doe", "Jane Smith", "Bob Johnson", "Alice Williams"],
+          "date": "2026-04-01"
+        },
+        {
+          "roomNumber": 2,
+          "members": ["Charlie Brown", "Diana Prince", "Edward Norton", "Fiona Apple"],
+          "date": "2026-04-01"
+        },
+        {
+          "roomNumber": 3,
+          "members": ["George Harris", "Helen Hunt", "Ian McKellen", "Julia Roberts"],
+          "date": "2026-04-01"
+        }
+      ]
+    }
+  ]
+}
+

@@ -1,4 +1,4 @@
-package com.breakoutroom.model;
+package com.breakout.models;
 
 import java.io.BufferedReader;
 import java.io.File;

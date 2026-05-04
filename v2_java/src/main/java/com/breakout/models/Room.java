@@ -1,4 +1,4 @@
-package com.breakoutroom.model;
+package com.breakout.models;
 
 import java.io.IOException;
 import java.util.*;
@@ -10,7 +10,7 @@ import java.util.*;
  * Date Created: January 25, 2021
  * Date Ported to Java: May 3, 2026
  */
-public class BreakoutRooms {
+public class Room {
     private List<PeopleList> rooms;
     private Map<String, Double> pastGroups;
     private int peoplePerRoom;
@@ -19,9 +19,9 @@ public class BreakoutRooms {
     private int oldPairs;
     private int totalPairs;
 
-    public BreakoutRooms(Map<String, Double> pastGroups, int peoplePerRoom,
-                         PeopleList peoplePresent, PeopleList peoplePresentF,
-                         PeopleList peoplePresentM, List<PeopleList> premadeGroups) {
+    public Room(Map<String, Double> pastGroups, int peoplePerRoom,
+                          PeopleList peoplePresent, PeopleList peoplePresentF,
+                          PeopleList peoplePresentM, List<PeopleList> premadeGroups) {
         this.pastGroups = pastGroups;
         this.peoplePerRoom = peoplePerRoom;
         this.peoplePresent = peoplePresent;
@@ -75,7 +75,7 @@ public class BreakoutRooms {
             int bestRoom = -1;
             double lowestEv = Double.POSITIVE_INFINITY;
 
-            BreakoutRooms tempRooms = this.copy();
+            Room tempRooms = this.copy();
             for (int index = 0; index < tempRooms.rooms.size(); index++) {
                 if (roomSizes.get(index) > this.peoplePerRoom) {
                     continue;
@@ -132,10 +132,10 @@ public class BreakoutRooms {
     }
 
     /**
-     * Create a deep copy of this BreakoutRooms object.
+     * Create a deep copy of this Room object.
      */
-    public BreakoutRooms copy() {
-        BreakoutRooms copy = new BreakoutRooms(
+    public Room copy() {
+        Room copy = new Room(
             new HashMap<>(this.pastGroups),
             this.peoplePerRoom,
             copyPeopleList(this.peoplePresent),
