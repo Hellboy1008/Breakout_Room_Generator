@@ -1,0 +1,13 @@
+Event Name: Sample Event
+Desired number of ppl per room: 4
+Premade groups: 0
+
+PRESENT:
+** Add your participants below. Use (N) for newcomers, (G1), (G2), etc. for premade groups **
+John Doe
+Jane Smith (N)
+Bob Johnson
+Alice Brown (N)
+Charlie Davis
+Diana Prince
+

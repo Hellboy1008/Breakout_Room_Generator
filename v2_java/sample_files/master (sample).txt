@@ -1,0 +1,7 @@
+John Doe (M,L)
+Jane Smith (F)
+Bob Johnson (M,L)
+Alice Brown (F)
+Charlie Davis (M)
+Diana Prince (F,L)
+
