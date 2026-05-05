@@ -118,13 +118,6 @@ public class ScoringEngine {
         return bestRoom;
     }
 
-    /**
-     * Calculate score for a given room configuration.
-     */
-    public double calculateScore(Room room) {
-        return room.errorVal();
-    }
-
     public int getGreedyTrials() {
         return GREEDY_TRIALS;
     }

@@ -43,9 +43,7 @@ public class StatsMain {
     private static void checkEventName(String eventName,
                                        List<List<String>> pastGroups,
                                        List<String[]> pastPairs) throws IOException {
-        boolean eventExists = false;
         boolean pastRoomsExist = false;
-        int groupNum = 0;
 
         File previousRoomsFile = new File("files/previous-rooms.txt");
         try (BufferedReader reader = new BufferedReader(new FileReader(previousRoomsFile))) {
@@ -54,19 +52,16 @@ public class StatsMain {
                 line = line.strip();
 
                 if (line.equals("EVENT: " + eventName + " (Y)")) {
-                    eventExists = true;
                     pastRoomsExist = true;
                 } else if (pastRoomsExist && line.contains("EVENT:")) {
                     break;
                 } else if (pastRoomsExist && !line.isEmpty()) {
                     pastGroups.add(Arrays.asList(line.split(", ")));
-                } else if (pastRoomsExist && line.isEmpty()) {
-                    groupNum++;
                 }
             }
         }
 
-        if (!eventExists || !pastRoomsExist) {
+        if (!pastRoomsExist) {
             System.out.println("Event was not found or event was found but there were no previous rooms.");
             System.exit(1);
         }

@@ -25,29 +25,6 @@ public class PeopleList {
     }
 
     /**
-     * Get all names in the list.
-     */
-    public List<String> getNames() {
-        List<String> names = new ArrayList<>();
-        for (Person person : this.list) {
-            names.add(person.name());
-        }
-        return names;
-    }
-
-    /**
-     * Remove and return the first person from the list.
-     */
-    public Person pop() {
-        if (this.list.isEmpty()) {
-            return null;
-        }
-        Person person = this.list.get(0);
-        this.list.remove(0);
-        return person;
-    }
-
-    /**
      * Move all newcomers to the front of the list.
      */
     public void pushNewcomers() {
