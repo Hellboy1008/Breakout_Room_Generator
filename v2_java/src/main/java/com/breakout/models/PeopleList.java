@@ -30,7 +30,7 @@ public class PeopleList {
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
         for (Person person : this.list) {
-            names.add(person.getName());
+            names.add(person.name());
         }
         return names;
     }
@@ -55,7 +55,7 @@ public class PeopleList {
         List<Person> nonNewcomers = new ArrayList<>();
 
         for (Person person : this.list) {
-            if (person.isNewcomer()) {
+            if (person.newcomer()) {
                 newcomers.add(person);
             } else {
                 nonNewcomers.add(person);
@@ -78,7 +78,7 @@ public class PeopleList {
      * Remove a person by name.
      */
     public void remove(String personName) {
-        this.list.removeIf(person -> person.getName().equals(personName));
+        this.list.removeIf(person -> person.name().equals(personName));
     }
 
     @Override
@@ -88,10 +88,6 @@ public class PeopleList {
 
     public List<Person> getList() {
         return list;
-    }
-
-    public void setList(List<Person> list) {
-        this.list = list;
     }
 
     public int size() {

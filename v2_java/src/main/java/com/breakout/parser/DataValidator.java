@@ -74,12 +74,12 @@ public class DataValidator {
             System.err.println("Error: Person is null");
             return false;
         }
-        if (person.getName() == null || person.getName().isEmpty()) {
+        if (person.name() == null || person.name().isEmpty()) {
             System.err.println("Error: Person name cannot be empty");
             return false;
         }
-        if (person.getGender() == null || (!person.getGender().equals("M") && !person.getGender().equals("F"))) {
-            System.err.println("Error: Invalid gender for " + person.getName());
+        if (person.gender() == null || (!person.gender().equals("M") && !person.gender().equals("F"))) {
+            System.err.println("Error: Invalid gender for " + person.name());
             return false;
         }
         return true;

@@ -104,7 +104,7 @@ public class Room {
             for (int index = 0; index < this.rooms.size(); index++) {
                 if (this.rooms.get(index).size() == this.peoplePerRoom + 1) {
                     for (Person person : this.rooms.get(index).getList()) {
-                        if (!person.isLeader() && !person.isNewcomer()) {
+                        if (!person.leader() && !person.newcomer()) {
                             moveList.add(new int[]{index, moveList.size()});
                         }
                     }
@@ -189,7 +189,7 @@ public class Room {
                 System.out.println("Enter the name of the person");
                 String name = scanner.nextLine();
                 if (userResponse.equals("1")) {
-                    this.addPerson(new Person(name));
+                    this.addPerson(Person.of(name));
                 } else {
                     this.removePerson(name);
                 }
@@ -217,8 +217,8 @@ public class Room {
         for (PeopleList room : roomsToCheck) {
             for (int p1 = 0; p1 < room.size(); p1++) {
                 for (int p2 = p1 + 1; p2 < room.size(); p2++) {
-                    String key1 = room.get(p1).getName() + "," + room.get(p2).getName();
-                    String key2 = room.get(p2).getName() + "," + room.get(p1).getName();
+                    String key1 = room.get(p1).name() + "," + room.get(p2).name();
+                    String key2 = room.get(p2).name() + "," + room.get(p1).name();
 
                     if (this.pastGroups.containsKey(key1)) {
                         ev += this.pastGroups.get(key1);
@@ -252,7 +252,7 @@ public class Room {
         // Place female leaders
         roomNumF = placeInRooms(
             peoplePresentF.getList().stream()
-                .filter(Person::isLeader)
+                .filter(Person::leader)
                 .toList(),
             roomNumF
         );
@@ -260,7 +260,7 @@ public class Room {
         // Place male leaders
         roomNumM = placeInRooms(
             peoplePresentM.getList().stream()
-                .filter(Person::isLeader)
+                .filter(Person::leader)
                 .toList(),
             roomNumF
         );
@@ -272,7 +272,7 @@ public class Room {
         // Place remaining females
         roomNumF = placeInRooms(
             peoplePresentF.getList().stream()
-                .filter(p -> !p.isLeader())
+                .filter(p -> !p.leader())
                 .toList(),
             roomNumF
         );
@@ -283,7 +283,7 @@ public class Room {
         }
         placeInRooms(
             peoplePresentM.getList().stream()
-                .filter(p -> !p.isLeader())
+                .filter(p -> !p.leader())
                 .toList(),
             roomNumM
         );
@@ -300,7 +300,7 @@ public class Room {
     public int getRoomNum(String name) {
         for (int index = 0; index < this.rooms.size(); index++) {
             for (Person person : this.rooms.get(index).getList()) {
-                if (person.getName().equals(name)) {
+                if (person.name().equals(name)) {
                     return index;
                 }
             }
@@ -346,7 +346,7 @@ public class Room {
     public void printRooms() {
         // Sort names in each room
         for (PeopleList room : this.rooms) {
-            room.getList().sort(Comparator.comparing(Person::getName));
+            room.getList().sort(Comparator.comparing(Person::name));
         }
 
         // Print rooms
@@ -394,30 +394,14 @@ public class Room {
      * Swap two people between rooms.
      */
     public void swap(Person p1, Person p2) {
-        int roomNum1 = getRoomNum(p1.getName());
-        int roomNum2 = getRoomNum(p2.getName());
+        int roomNum1 = getRoomNum(p1.name());
+        int roomNum2 = getRoomNum(p2.name());
 
-        this.rooms.get(roomNum1).remove(p1.getName());
+        this.rooms.get(roomNum1).remove(p1.name());
         this.rooms.get(roomNum1).add(p2);
-        this.rooms.get(roomNum2).remove(p2.getName());
+        this.rooms.get(roomNum2).remove(p2.name());
         this.rooms.get(roomNum2).add(p1);
     }
 
-    // Getters
-    public List<PeopleList> getRooms() {
-        return rooms;
-    }
-
-    public int getPremadeGroupsCount() {
-        return premadeGroupsCount;
-    }
-
-    public int getOldPairs() {
-        return oldPairs;
-    }
-
-    public int getTotalPairs() {
-        return totalPairs;
-    }
 }
 

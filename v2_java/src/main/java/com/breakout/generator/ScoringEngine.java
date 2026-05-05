@@ -93,9 +93,9 @@ public class ScoringEngine {
                 p1 = selectedList.get(0);
                 p2 = selectedList.get(1);
 
-                if (p1.isLeader() == p2.isLeader() &&
-                    p1.isNewcomer() == p2.isNewcomer() &&
-                    bestRoom.getRoomNum(p1.getName()) != bestRoom.getRoomNum(p2.getName())) {
+                if (p1.leader() == p2.leader() &&
+                    p1.newcomer() == p2.newcomer() &&
+                    bestRoom.getRoomNum(p1.name()) != bestRoom.getRoomNum(p2.name())) {
                     validPair = true;
                 }
             }
@@ -125,7 +125,6 @@ public class ScoringEngine {
         return room.errorVal();
     }
 
-    // Getters and setters
     public int getGreedyTrials() {
         return GREEDY_TRIALS;
     }

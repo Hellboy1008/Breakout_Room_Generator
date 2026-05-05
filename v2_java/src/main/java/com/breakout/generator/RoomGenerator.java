@@ -98,7 +98,7 @@ public class RoomGenerator {
             int groupNum = count + 1;
 
             for (Person person : this.peoplePresent.getList()) {
-                if (person.getGroup() == groupNum) {
+                if (person.group() == groupNum) {
                     group.add(person);
                 }
             }
@@ -109,7 +109,7 @@ public class RoomGenerator {
         // Remove premade group members from general population
         for (PeopleList group : this.premadeGroups) {
             for (Person person : group.getList()) {
-                this.peoplePresent.remove(person.getName());
+                this.peoplePresent.remove(person.name());
             }
         }
     }
@@ -119,7 +119,7 @@ public class RoomGenerator {
      */
     private void separateGender() {
         for (Person person : this.peoplePresent.getList()) {
-            if ("M".equals(person.getGender())) {
+            if ("M".equals(person.gender())) {
                 this.peoplePresentM.add(person);
             } else {
                 this.peoplePresentF.add(person);
@@ -127,25 +127,8 @@ public class RoomGenerator {
         }
     }
 
-    // Getters
-    public String getEventName() {
-        return eventName;
-    }
-
-    public int getPeoplePerRoom() {
-        return peoplePerRoom;
-    }
-
     public PeopleList getPeoplePresent() {
         return peoplePresent;
-    }
-
-    public PeopleList getPeoplePresentF() {
-        return peoplePresentF;
-    }
-
-    public PeopleList getPeoplePresentM() {
-        return peoplePresentM;
     }
 
     public Map<String, Double> getPastGroups() {

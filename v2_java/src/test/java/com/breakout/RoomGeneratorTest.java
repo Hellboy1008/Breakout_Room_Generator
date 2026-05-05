@@ -30,7 +30,7 @@ public class RoomGeneratorTest {
     @Test
     public void testPeopleListOperations() {
         PeopleList list = new PeopleList();
-        Person person = new Person("John Doe");
+        Person person = Person.of("John Doe");
 
         list.add(person);
         assertEquals(1, list.size());
@@ -40,19 +40,19 @@ public class RoomGeneratorTest {
 
     @Test
     public void testPersonParsing() {
-        Person newPerson = new Person("Jane Smith (N)");
-        assertTrue(newPerson.isNewcomer());
+        Person newPerson = Person.of("Jane Smith (N)");
+        assertTrue(newPerson.newcomer());
 
-        Person groupPerson = new Person("Bob Jones (G1)");
-        assertEquals(1, groupPerson.getGroup());
+        Person groupPerson = Person.of("Bob Jones (G1)");
+        assertEquals(1, groupPerson.group());
     }
 
     @Test
     public void testPeopleListRemove() {
         PeopleList list = new PeopleList();
-        list.add(new Person("Alice"));
-        list.add(new Person("Bob"));
-        list.add(new Person("Charlie"));
+        list.add(Person.of("Alice"));
+        list.add(Person.of("Bob"));
+        list.add(Person.of("Charlie"));
 
         assertEquals(3, list.size());
         list.remove("Bob");

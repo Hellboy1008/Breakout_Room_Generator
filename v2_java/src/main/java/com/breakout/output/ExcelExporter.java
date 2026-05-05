@@ -123,25 +123,12 @@ public class ExcelExporter {
         return dataFrame;
     }
 
-    // Getters
-    public String getEventName() {
-        return eventName;
-    }
-
     public void setEventName(String eventName) {
         this.eventName = eventName;
     }
 
-    public List<List<String>> getPastGroups() {
-        return pastGroups;
-    }
-
     public void setPastGroups(List<List<String>> pastGroups) {
         this.pastGroups = pastGroups;
-    }
-
-    public List<String[]> getPastPairs() {
-        return pastPairs;
     }
 
     public void setPastPairs(List<String[]> pastPairs) {

@@ -10,68 +10,42 @@ import java.io.IOException;
  * Parses special name notations: (N) for newcomer, (G#) for premade groups.
  * Loads gender and leader status from master file.
  */
-public class Person {
-    private String name;
-    private int group;
-    private boolean newcomer;
-    private String gender;
-    private boolean leader;
+public record Person(String name, int group, boolean newcomer, String gender, boolean leader) {
 
-    public Person(String name) {
-        this.parseNameAndGroup(name);
-        this.addGender();
-    }
+    public static Person of(String rawName) {
+        String parsedName;
+        int group;
+        boolean newcomer;
 
-    /**
-     * Parse the person's name and extract group/newcomer information from notation.
-     * Notation: (N) for newcomer, (G#) for premade group
-     */
-    private void parseNameAndGroup(String name) {
-        // Check if person is a newcomer or in a premade group
-        if (name.contains("(N)")) {
-            this.group = 0;
-            this.newcomer = true;
-        } else if (name.contains("(G")) {
-            int startIdx = name.indexOf("(G") + 2;
-            int endIdx = name.indexOf("(G") + 3;
-            this.group = Integer.parseInt(name.substring(startIdx, endIdx));
-            this.newcomer = false;
+        if (rawName.contains("(N)")) {
+            group = 0;
+            newcomer = true;
+        } else if (rawName.contains("(G")) {
+            int startIdx = rawName.indexOf("(G") + 2;
+            int endIdx = rawName.indexOf("(G") + 3;
+            group = Integer.parseInt(rawName.substring(startIdx, endIdx));
+            newcomer = false;
         } else {
-            this.group = 0;
-            this.newcomer = false;
+            group = 0;
+            newcomer = false;
         }
 
-        // Remove special notations from name
-        if (name.contains("(")) {
-            this.name = name.substring(0, name.indexOf("(")).trim();
+        if (rawName.contains("(")) {
+            parsedName = rawName.substring(0, rawName.indexOf("(")).trim();
         } else {
-            this.name = name;
+            parsedName = rawName;
         }
 
-        this.leader = false;
-    }
-
-    /**
-     * Add gender and leader status from master file.
-     */
-    private void addGender() {
-        this.gender = null;
+        String gender = null;
+        boolean leader = false;
         File masterFile = new File("files/master.txt");
 
         try (BufferedReader reader = new BufferedReader(new FileReader(masterFile))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.contains(this.name)) {
-                    if (line.contains("(M")) {
-                        this.gender = "M";
-                    } else {
-                        this.gender = "F";
-                    }
-                    if (line.contains(",L)")) {
-                        this.leader = true;
-                    } else {
-                        this.leader = false;
-                    }
+                if (line.contains(parsedName)) {
+                    gender = line.contains("(M") ? "M" : "F";
+                    leader = line.contains(",L)");
                     break;
                 }
             }
@@ -79,21 +53,18 @@ public class Person {
             // Master file not found, will prompt user for gender
         }
 
-        // If gender not found in master file, prompt user
-        if (this.gender == null) {
-            this.leader = false;
-            this.gender = promptForGender();
+        if (gender == null) {
+            gender = promptForGender(parsedName);
         }
+
+        return new Person(parsedName, group, newcomer, gender, leader);
     }
 
-    /**
-     * Prompt user for gender input.
-     */
-    private String promptForGender() {
+    private static String promptForGender(String name) {
         java.util.Scanner scanner = new java.util.Scanner(System.in);
         String gender = "";
         while (!gender.equalsIgnoreCase("M") && !gender.equalsIgnoreCase("F")) {
-            System.out.println("Input the gender for: " + this.name);
+            System.out.println("Input the gender for: " + name);
             System.out.println("Type M for male, F for female");
             gender = scanner.nextLine();
         }
@@ -102,47 +73,6 @@ public class Person {
 
     @Override
     public String toString() {
-        return this.name;
-    }
-
-    public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getGroup() {
-        return group;
-    }
-
-    public void setGroup(int group) {
-        this.group = group;
-    }
-
-    public boolean isNewcomer() {
-        return newcomer;
-    }
-
-    public void setNewcomer(boolean newcomer) {
-        this.newcomer = newcomer;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public boolean isLeader() {
-        return leader;
-    }
-
-    public void setLeader(boolean leader) {
-        this.leader = leader;
-    }
 }
-

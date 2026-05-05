@@ -43,7 +43,7 @@ public class InputParser {
                 } else if (line.contains("Premade groups:")) {
                     this.premadeGroupsCount = Integer.parseInt(line.substring(15).strip());
                 } else if (!line.contains("**") && !line.contains("PRESENT:") && !line.isEmpty()) {
-                    this.peoplePresent.add(new Person(line));
+                    this.peoplePresent.add(Person.of(line));
                 }
             }
         }

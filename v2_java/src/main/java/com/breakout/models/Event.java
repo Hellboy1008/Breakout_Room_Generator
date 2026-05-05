@@ -30,54 +30,6 @@ public class Event {
         this.peoplePerRoom = peoplePerRoom;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getPeoplePerRoom() {
-        return peoplePerRoom;
-    }
-
-    public void setPeoplePerRoom(int peoplePerRoom) {
-        this.peoplePerRoom = peoplePerRoom;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Map<String, Double> getPastGroups() {
-        return pastGroups;
-    }
-
-    public void setPastGroups(Map<String, Double> pastGroups) {
-        this.pastGroups = pastGroups;
-    }
-
-    public List<PeopleList> getPremadeGroups() {
-        return premadeGroups;
-    }
-
-    public void setPremadeGroups(List<PeopleList> premadeGroups) {
-        this.premadeGroups = premadeGroups;
-    }
-
-    public PeopleList getAttendees() {
-        return attendees;
-    }
-
-    public void setAttendees(PeopleList attendees) {
-        this.attendees = attendees;
-    }
-
     public void addAttendee(Person person) {
         this.attendees.add(person);
     }

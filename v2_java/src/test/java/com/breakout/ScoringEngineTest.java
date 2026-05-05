@@ -30,10 +30,10 @@ public class ScoringEngineTest {
         pastGroups = new HashMap<>();
 
         // Add test people
-        Person p1 = new Person("Alice");
-        Person p2 = new Person("Bob");
-        Person p3 = new Person("Charlie");
-        Person p4 = new Person("Diana");
+        Person p1 = Person.of("Alice");
+        Person p2 = Person.of("Bob");
+        Person p3 = Person.of("Charlie");
+        Person p4 = Person.of("Diana");
 
         peoplePresent.add(p1);
         peoplePresent.add(p2);
