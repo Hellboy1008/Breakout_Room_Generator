@@ -13,8 +13,6 @@ import java.util.Map;
 
 /**
  * Unit tests for ScoringEngine.
- *
- * Date Created: May 3, 2026
  */
 public class ScoringEngineTest {
 

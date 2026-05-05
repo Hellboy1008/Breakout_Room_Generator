@@ -10,8 +10,6 @@ import java.util.*;
 
 /**
  * Exports breakout room statistics to Excel format.
- *
- * Date Ported to Java: May 3, 2026
  */
 public class ExcelExporter {
     private String eventName;

@@ -6,9 +6,7 @@ import com.breakout.models.PeopleList;
 import java.io.File;
 
 /**
- * Validates input data and file integrity.
- *
- * Date Ported to Java: May 3, 2026
+ * Validates input data and file integrity before processing.
  */
 public class DataValidator {
 

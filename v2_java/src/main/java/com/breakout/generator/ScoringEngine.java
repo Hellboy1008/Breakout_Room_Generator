@@ -9,8 +9,6 @@ import java.util.Map;
 /**
  * Scoring and optimization engine for breakout room generation.
  * Handles algorithm logic for finding optimal room configurations.
- *
- * Date Ported to Java: May 3, 2026
  */
 public class ScoringEngine {
     private static final int GREEDY_TRIALS = 5000;

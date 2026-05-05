@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents an event with breakout room configuration.
- *
- * Date Ported to Java: May 3, 2026
+ * Represents an event with breakout room configuration and attendee management.
  */
 public class Event {
     private String name;
@@ -32,7 +30,6 @@ public class Event {
         this.peoplePerRoom = peoplePerRoom;
     }
 
-    // Getters and setters
     public String getName() {
         return name;
     }

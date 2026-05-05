@@ -7,10 +7,8 @@ import java.io.IOException;
 
 /**
  * Represents a person participating in a breakout room.
- *
- * Created by: 龍ONE
- * Date Created: February 1, 2021
- * Date Ported to Java: May 3, 2026
+ * Parses special name notations: (N) for newcomer, (G#) for premade groups.
+ * Loads gender and leader status from master file.
  */
 public class Person {
     private String name;
@@ -107,7 +105,6 @@ public class Person {
         return this.name;
     }
 
-    // Getters and setters
     public String getName() {
         return name;
     }

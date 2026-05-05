@@ -11,9 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Parses input files and extracts event data.
- *
- * Date Ported to Java: May 3, 2026
+ * Parses input files and extracts event data including people, groups, and past pairings.
  */
 public class InputParser {
     private String eventName;

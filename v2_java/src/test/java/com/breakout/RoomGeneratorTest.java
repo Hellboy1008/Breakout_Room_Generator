@@ -9,8 +9,6 @@ import static org.junit.Assert.*;
 
 /**
  * Unit tests for RoomGenerator.
- *
- * Date Created: May 3, 2026
  */
 public class RoomGeneratorTest {
 

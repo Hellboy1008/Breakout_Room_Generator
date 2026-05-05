@@ -14,10 +14,6 @@ import java.util.Map;
 /**
  * Main orchestrator for room generation.
  * Coordinates parsing, validation, room creation, and optimization.
- *
- * Created by: 龍ONE
- * Date Created: January 25, 2021
- * Date Ported to Java: May 3, 2026
  */
 public class RoomGenerator {
     private String eventName;

@@ -5,10 +5,7 @@ import java.util.*;
 
 /**
  * Represents a collection of breakout rooms for event participants.
- *
- * Created by: 龍ONE
- * Date Created: January 25, 2021
- * Date Ported to Java: May 3, 2026
+ * Manages room creation, person assignment, balancing, and optimization based on past pairings.
  */
 public class Room {
     private List<PeopleList> rooms;

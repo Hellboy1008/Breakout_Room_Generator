@@ -6,10 +6,7 @@ import java.util.List;
 
 /**
  * Represents a list of people for breakout rooms.
- *
- * Created by: 龍ONE
- * Date Created: January 25, 2021
- * Date Ported to Java: May 3, 2026
+ * Provides utilities for managing, randomizing, and organizing participants.
  */
 public class PeopleList {
     private List<Person> list;
@@ -89,7 +86,6 @@ public class PeopleList {
         return this.list.toString();
     }
 
-    // Getters and setters
     public List<Person> getList() {
         return list;
     }

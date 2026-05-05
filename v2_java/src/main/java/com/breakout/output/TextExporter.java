@@ -11,8 +11,6 @@ import java.util.Map;
 
 /**
  * Exports breakout room data to text format.
- *
- * Date Ported to Java: May 3, 2026
  */
 public class TextExporter {
 
